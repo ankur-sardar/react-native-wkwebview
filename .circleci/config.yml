@@ -37,19 +37,6 @@ jobs:
           name: Run Tests
           command: yarn ci:test
 
-  publish:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          name: Restore node modules
-          keys:
-            - node_modules-{{ arch }}-{{ checksum "yarn.lock" }}
-
-      - run:
-          name: Publish to NPM
-          command: yarn ci:publish
-
 workflows:
   version: 2
   ci:
@@ -58,9 +45,3 @@ workflows:
       - tests:
           requires:
             - setup
-      - publish:
-          requires:
-            - tests
-          filters:
-            branches:
-              only: master
